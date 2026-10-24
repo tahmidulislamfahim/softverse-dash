@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/common/styles/global_text_style.dart';
 import '../../../core/utils/constants/colors.dart';
+import '../../../core/utils/responsive.dart';
 
 class SalesBarChart extends StatelessWidget {
   final List<double> values;
@@ -19,37 +20,55 @@ class SalesBarChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isShort = AppResponsive.isLandscape(context) &&
+        MediaQuery.sizeOf(context).height < 500;
+    final chartHeight = isShort ? 200.0 : 280.h;
+
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.fromLTRB(20.w, 20.h, 20.w, 16.h),
+      padding: EdgeInsets.fromLTRB(16.w, 18.h, 16.w, 14.h),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8.r),
       ),
       child: SizedBox(
-        height: 280.h,
+        height: chartHeight,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             SizedBox(
               width: 24.w,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  for (final label in _yLabels)
-                    Text(
-                      label,
-                      style: getTextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.dashboardAxisGrey,
-                      ),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        for (final label in _yLabels)
+                          Text(
+                            label,
+                            style: getTextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.dashboardAxisGrey,
+                            ),
+                          ),
+                      ],
                     ),
+                  ),
+                  SizedBox(height: 8.h),
+                  const Visibility(
+                    maintainSize: true,
+                    maintainAnimation: true,
+                    maintainState: true,
+                    visible: false,
+                    child: Text('0.00', style: TextStyle(fontSize: 11)),
+                  ),
                 ],
               ),
             ),
-            SizedBox(width: 12.w),
+            SizedBox(width: 8.w),
             Expanded(
               child: Column(
                 children: [
@@ -107,12 +126,15 @@ class SalesBarChart extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       for (final label in _xLabels)
-                        Text(
-                          label,
-                          style: getTextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.dashboardAxisGrey,
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            label,
+                            style: getTextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.dashboardAxisGrey,
+                            ),
                           ),
                         ),
                     ],

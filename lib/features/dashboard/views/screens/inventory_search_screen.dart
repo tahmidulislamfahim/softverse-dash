@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../../core/utils/responsive.dart';
 import '../../controller/dashboard_controller.dart';
 import '../../widgets/inventory_product_card.dart';
 
@@ -43,46 +45,77 @@ class _InventorySearchScreenState extends State<InventorySearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Search inventory')),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            TextField(
-              controller: _query,
-              autofocus: true,
-              onChanged: _search,
-              textInputAction: TextInputAction.search,
-              decoration: const InputDecoration(
-                labelText: 'Name, SKU, or barcode',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
+      body: ResponsiveCenter(
+        maxWidth: AppResponsive.maxContentWidth,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              TextField(
+                controller: _query,
+                autofocus: true,
+                onChanged: _search,
+                textInputAction: TextInputAction.search,
+                decoration: const InputDecoration(
+                  labelText: 'Name, SKU, or barcode',
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(),
+                ),
               ),
-            ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: Obx(() {
-                if (_controller.isInventoryLoading.value) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                if (_controller.inventoryError.value != null) {
-                  return Center(child: Text(_controller.inventoryError.value!));
-                }
-                final products = _controller.inventoryProducts;
-                if (products.isEmpty) {
-                  return const Center(child: Text('No items found'));
-                }
-                return ListView.separated(
-                  itemCount: products.length,
-                  separatorBuilder: (_, _) => const SizedBox(height: 8),
-                  itemBuilder: (_, index) => InventoryProductCard(
-                    product: products[index],
-                    onTap: () =>
-                        _controller.openInventoryProduct(products[index]),
-                  ),
-                );
-              }),
-            ),
-          ],
+              const SizedBox(height: 16),
+              Expanded(
+                child: Obx(() {
+                  if (_controller.isInventoryLoading.value) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (_controller.inventoryError.value != null) {
+                    return Center(child: Text(_controller.inventoryError.value!));
+                  }
+                  final products = _controller.inventoryProducts;
+                  if (products.isEmpty) {
+                    return const Center(child: Text('No items found'));
+                  }
+                  return LayoutBuilder(
+                    builder: (context, constraints) {
+                      final crossAxisCount = constraints.maxWidth >= 1000
+                          ? 3
+                          : (constraints.maxWidth >= 640 ? 2 : 1);
+
+                      if (crossAxisCount > 1) {
+                        return GridView.builder(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: crossAxisCount,
+                            mainAxisSpacing: 10.h,
+                            crossAxisSpacing: 12.w,
+                            mainAxisExtent: 108,
+                          ),
+                          itemCount: products.length,
+                          itemBuilder: (_, index) => InventoryProductCard(
+                            product: products[index],
+                            onTap: () =>
+                                _controller.openInventoryProduct(products[index]),
+                          ),
+                        );
+                      }
+
+                      return ListView.separated(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        itemCount: products.length,
+                        separatorBuilder: (_, _) => const SizedBox(height: 8),
+                        itemBuilder: (_, index) => InventoryProductCard(
+                          product: products[index],
+                          onTap: () =>
+                              _controller.openInventoryProduct(products[index]),
+                        ),
+                      );
+                    },
+                  );
+                }),
+              ),
+            ],
+          ),
         ),
       ),
     );

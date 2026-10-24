@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import '../../../../core/common/widgets/gradient_app_bar.dart';
 import '../../../../core/utils/constants/colors.dart';
+import '../../../../core/utils/responsive.dart';
 import '../../controller/dashboard_controller.dart';
 import '../../widgets/dashboard_bottom_nav.dart';
 import '../../widgets/dashboard_date_bar.dart';
@@ -74,7 +75,10 @@ class _SalesSummaryScreenState extends State<SalesSummaryScreen> {
                     child: const Text('Try again'),
                   ),
                 ] else
-                  SalesSummaryBreakdownCard(controller: controller),
+                  ResponsiveCenter(
+                    maxWidth: AppResponsive.maxCardWidth,
+                    child: SalesSummaryBreakdownCard(controller: controller),
+                  ),
               ],
             ),
           ),

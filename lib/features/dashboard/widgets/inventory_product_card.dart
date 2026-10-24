@@ -33,7 +33,7 @@ class InventoryProductCard extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(12.r),
       child: Container(
-        padding: EdgeInsets.all(15.w),
+        padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12.r),
           border: Border.all(color: AppColors.dashboardCardBorder),
@@ -51,12 +51,16 @@ class InventoryProductCard extends StatelessWidget {
             SizedBox(width: 12.w),
             Expanded(
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     product.name,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                     style: getTextStyle(
-                      fontSize: 16,
+                      fontSize: 15,
                       fontWeight: FontWeight.w500,
                       color: AppColors.dashboardTextDark,
                     ),
@@ -64,8 +68,10 @@ class InventoryProductCard extends StatelessWidget {
                   SizedBox(height: 4.h),
                   Text(
                     product.sku,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: getTextStyle(
-                      fontSize: 14,
+                      fontSize: 13,
                       fontWeight: FontWeight.w400,
                       color: AppColors.dashboardAccentBlue,
                     ),
@@ -73,13 +79,16 @@ class InventoryProductCard extends StatelessWidget {
                 ],
               ),
             ),
+            SizedBox(width: 8.w),
             Column(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
                   padding: EdgeInsets.symmetric(
                     horizontal: 10.w,
-                    vertical: 4.h,
+                    vertical: 3.h,
                   ),
                   decoration: BoxDecoration(
                     color: statusColor.withValues(alpha: 0.2),
@@ -88,16 +97,16 @@ class InventoryProductCard extends StatelessWidget {
                   child: Text(
                     '${product.stockCount} In Stock',
                     style: getTextStyle(
-                      fontSize: 14,
+                      fontSize: 13,
                       fontWeight: FontWeight.w400,
                       color: statusColor,
                     ),
                   ),
                 ),
-                SizedBox(height: 6.h),
+                SizedBox(height: 4.h),
                 if (product.expirationDate != null) ...[
                   Text(
-                    '${product.expirationStatus == 'expired' ? 'Expired' : 'Expires'} ${DateFormat('dd MMM yyyy').format(product.expirationDate!.toLocal())}',
+                    '${product.expirationStatus == "expired" ? "Expired" : "Expires"} ${DateFormat("dd MMM yyyy").format(product.expirationDate!.toLocal())}',
                     style: getTextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.w500,
@@ -111,7 +120,7 @@ class InventoryProductCard extends StatelessWidget {
                 Text(
                   '${Get.find<DashboardController>().currencySymbol}${_wholeAmount.format(product.price)}',
                   style: getTextStyle(
-                    fontSize: 18,
+                    fontSize: 17,
                     fontWeight: FontWeight.w500,
                     color: AppColors.dashboardAccentBlue,
                   ),

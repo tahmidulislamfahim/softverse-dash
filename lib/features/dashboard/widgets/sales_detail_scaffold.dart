@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import '../../../core/common/styles/global_text_style.dart';
 import '../../../core/common/widgets/gradient_app_bar.dart';
 import '../../../core/utils/constants/colors.dart';
+import '../../../core/utils/responsive.dart';
 import '../controller/dashboard_controller.dart';
 import 'dashboard_bottom_nav.dart';
 import 'dashboard_date_bar.dart';
@@ -68,59 +69,62 @@ class SalesDetailScaffold extends StatelessWidget {
         ),
         body: Padding(
           padding: EdgeInsets.all(16.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    sectionLabel,
-                    style: getTextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.dashboardTextDark,
+          child: ResponsiveCenter(
+            maxWidth: AppResponsive.maxCardWidth,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      sectionLabel,
+                      style: getTextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.dashboardTextDark,
+                      ),
                     ),
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.arrow_upward,
-                        color: AppColors.dashboardAccentBlue,
-                        size: 16.w,
-                      ),
-                      SizedBox(width: 4.w),
-                      Text(
-                        'Net sales',
-                        style: getTextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.arrow_upward,
                           color: AppColors.dashboardAccentBlue,
+                          size: 16.w,
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(height: 11.h),
-              Expanded(
-                child: _ReportBody(
-                  items: listItems,
-                  isLoading: isLoading,
-                  error: error,
-                  hasMore: hasMore,
-                  onRefresh: onRefresh,
-                  onLoadMore: onLoadMore,
+                        SizedBox(width: 4.w),
+                        Text(
+                          'Net sales',
+                          style: getTextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.dashboardAccentBlue,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-              ),
-              SizedBox(height: 16.h),
-              SalesSummaryFooterCard(
-                title: footerTitle,
-                countLabel: footerCountLabel,
-                amount: footerAmount,
-              ),
-            ],
+                SizedBox(height: 11.h),
+                Expanded(
+                  child: _ReportBody(
+                    items: listItems,
+                    isLoading: isLoading,
+                    error: error,
+                    hasMore: hasMore,
+                    onRefresh: onRefresh,
+                    onLoadMore: onLoadMore,
+                  ),
+                ),
+                SizedBox(height: 16.h),
+                SalesSummaryFooterCard(
+                  title: footerTitle,
+                  countLabel: footerCountLabel,
+                  amount: footerAmount,
+                ),
+              ],
+            ),
           ),
         ),
         bottomNavigationBar: DashboardBottomNav(controller: controller),

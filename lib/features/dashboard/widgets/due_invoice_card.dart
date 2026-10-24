@@ -26,12 +26,13 @@ class DueInvoiceCard extends StatelessWidget {
     ].join(' · ');
 
     return Container(
-      padding: EdgeInsets.all(15.w),
+      padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.r),
         border: Border.all(color: AppColors.dashboardCardBorder),
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
@@ -39,10 +40,13 @@ class DueInvoiceCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       invoice.customerName,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: getTextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
@@ -52,6 +56,8 @@ class DueInvoiceCard extends StatelessWidget {
                     SizedBox(height: 4.h),
                     Text(
                       '#${invoice.orderNumber}',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: getTextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
@@ -63,6 +69,7 @@ class DueInvoiceCard extends StatelessWidget {
               ),
               SizedBox(width: 12.w),
               Column(
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
@@ -87,9 +94,11 @@ class DueInvoiceCard extends StatelessWidget {
             ],
           ),
           if (details.isNotEmpty) ...[
-            SizedBox(height: 10.h),
+            SizedBox(height: 8.h),
             Text(
               details,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: getTextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w400,
@@ -101,6 +110,8 @@ class DueInvoiceCard extends StatelessWidget {
           Text(
             'Paid ${money(invoice.amountReceived)} of '
             '${money(invoice.totalAmount)}',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: getTextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w400,

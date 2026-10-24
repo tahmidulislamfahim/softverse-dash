@@ -30,73 +30,90 @@ class SalesSummarySection extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            _GaugeStat(
-              size: 100.w,
-              progress: 0.35,
-              trackColor: AppColors.gaugeYellowTrack,
-              gradientColors: const [
-                AppColors.gaugeYellowStart,
-                AppColors.gaugeYellowEnd,
-              ],
-              valueBuilder: () => Obx(
-                () => Text(
-                  '${controller.transactions.value}',
-                  style: getTextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.dashboardTextDark,
+            Expanded(
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: _GaugeStat(
+                  size: 100.w,
+                  progress: 0.35,
+                  trackColor: AppColors.gaugeYellowTrack,
+                  gradientColors: const [
+                    AppColors.gaugeYellowStart,
+                    AppColors.gaugeYellowEnd,
+                  ],
+                  valueBuilder: () => Obx(
+                    () => Text(
+                      '${controller.transactions.value}',
+                      style: getTextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.dashboardTextDark,
+                      ),
+                    ),
                   ),
+                  label: 'Transections',
+                  changeBuilder: () =>
+                      Obx(() => _ChangeText(controller.transactionsChange.value)),
                 ),
               ),
-              label: 'Transections',
-              changeBuilder: () =>
-                  Obx(() => _ChangeText(controller.transactionsChange.value)),
             ),
-            _GaugeStat(
-              size: 129.w,
-              progress: 0.88,
-              trackColor: AppColors.gaugeGreenTrack,
-              gradientColors: const [
-                AppColors.gaugeGreenStart,
-                AppColors.gaugeGreenEnd,
-              ],
-              valueBuilder: () => Obx(
-                () => Text(
-                  controller.money(controller.netSales.value),
-                  maxLines: 1,
-                  style: getTextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.dashboardTextDark,
+            SizedBox(width: 8.w),
+            Expanded(
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: _GaugeStat(
+                  size: 129.w,
+                  progress: 0.88,
+                  trackColor: AppColors.gaugeGreenTrack,
+                  gradientColors: const [
+                    AppColors.gaugeGreenStart,
+                    AppColors.gaugeGreenEnd,
+                  ],
+                  valueBuilder: () => Obx(
+                    () => Text(
+                      controller.money(controller.netSales.value),
+                      maxLines: 1,
+                      style: getTextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.dashboardTextDark,
+                      ),
+                    ),
                   ),
+                  label: 'Net sales',
+                  changeBuilder: () =>
+                      Obx(() => _ChangeText(controller.netSalesChange.value)),
                 ),
               ),
-              label: 'Net sales',
-              changeBuilder: () =>
-                  Obx(() => _ChangeText(controller.netSalesChange.value)),
             ),
-            _GaugeStat(
-              size: 100.w,
-              progress: 0.62,
-              trackColor: AppColors.gaugePurpleTrack,
-              gradientColors: const [
-                AppColors.gaugePurpleStart,
-                AppColors.gaugePurpleEnd,
-              ],
-              valueBuilder: () => Obx(
-                () => Text(
-                  controller.money(controller.averageSale.value),
-                  maxLines: 1,
-                  style: getTextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.dashboardTextDark,
+            SizedBox(width: 8.w),
+            Expanded(
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: _GaugeStat(
+                  size: 100.w,
+                  progress: 0.62,
+                  trackColor: AppColors.gaugePurpleTrack,
+                  gradientColors: const [
+                    AppColors.gaugePurpleStart,
+                    AppColors.gaugePurpleEnd,
+                  ],
+                  valueBuilder: () => Obx(
+                    () => Text(
+                      controller.money(controller.averageSale.value),
+                      maxLines: 1,
+                      style: getTextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.dashboardTextDark,
+                      ),
+                    ),
                   ),
+                  label: 'Average sale',
+                  changeBuilder: () =>
+                      Obx(() => _ChangeText(controller.averageSaleChange.value)),
                 ),
               ),
-              label: 'Average sale',
-              changeBuilder: () =>
-                  Obx(() => _ChangeText(controller.averageSaleChange.value)),
             ),
           ],
         ),

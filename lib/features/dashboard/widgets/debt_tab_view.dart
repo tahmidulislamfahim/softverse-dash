@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import '../../../core/common/styles/global_text_style.dart';
 import '../../../core/utils/constants/colors.dart';
+import '../../../core/utils/responsive.dart';
 import '../controller/dashboard_controller.dart';
 import 'due_invoice_card.dart';
 
@@ -17,68 +18,133 @@ class DebtTabView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(16.w),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _DebtTotalCard(controller: controller),
-          SizedBox(height: 16.h),
-          Expanded(
-            child: Obx(() {
-              final invoices = controller.dueInvoices.toList(growable: false);
-              final isLoading = controller.isDueInvoicesLoading.value;
-              final error = controller.dueInvoicesError.value;
-              if (isLoading && invoices.isEmpty) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              return RefreshIndicator(
-                onRefresh: controller.refreshDueInvoices,
-                child: ListView.separated(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  itemCount: invoices.length + 1,
-                  separatorBuilder: (_, _) => SizedBox(height: 8.h),
-                  itemBuilder: (_, index) {
-                    if (index < invoices.length) {
-                      return DueInvoiceCard(
-                        invoice: invoices[index],
-                        money: controller.money,
-                      );
-                    }
-                    if (invoices.isEmpty) {
-                      return Padding(
-                        padding: EdgeInsets.only(top: 160.h),
-                        child: Center(
-                          child: Text(
-                            error ?? 'No due invoices',
-                            textAlign: TextAlign.center,
-                            style: getTextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.textSecondary,
+    return ResponsiveCenter(
+      maxWidth: AppResponsive.maxContentWidth,
+      child: Padding(
+        padding: EdgeInsets.all(16.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _DebtTotalCard(controller: controller),
+            SizedBox(height: 16.h),
+            Expanded(
+              child: Obx(() {
+                final invoices = controller.dueInvoices.toList(growable: false);
+                final isLoading = controller.isDueInvoicesLoading.value;
+                final error = controller.dueInvoicesError.value;
+                if (isLoading && invoices.isEmpty) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                return RefreshIndicator(
+                  onRefresh: controller.refreshDueInvoices,
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      final crossAxisCount = constraints.maxWidth >= 720 ? 2 : 1;
+
+                      if (crossAxisCount > 1) {
+                        return CustomScrollView(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          slivers: [
+                            SliverGrid(
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: crossAxisCount,
+                                mainAxisSpacing: 10.h,
+                                crossAxisSpacing: 12.w,
+                                mainAxisExtent: 140,
+                              ),
+                              delegate: SliverChildBuilderDelegate(
+                                (_, index) => DueInvoiceCard(
+                                  invoice: invoices[index],
+                                  money: controller.money,
+                                ),
+                                childCount: invoices.length,
+                              ),
                             ),
-                          ),
-                        ),
+                            if (invoices.isEmpty)
+                              SliverToBoxAdapter(
+                                child: Padding(
+                                  padding: EdgeInsets.only(top: 160.h),
+                                  child: Center(
+                                    child: Text(
+                                      error ?? 'No due invoices',
+                                      textAlign: TextAlign.center,
+                                      style: getTextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        color: AppColors.textSecondary,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            if (controller.canLoadMoreDueInvoices)
+                              SliverToBoxAdapter(
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 16.h),
+                                  child: Center(
+                                    child: isLoading
+                                        ? const CircularProgressIndicator()
+                                        : TextButton(
+                                            onPressed: () => controller
+                                                .refreshDueInvoices(loadMore: true),
+                                            child: const Text('Load more'),
+                                          ),
+                                  ),
+                                ),
+                              ),
+                          ],
+                        );
+                      }
+
+                      return ListView.separated(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        itemCount: invoices.length + 1,
+                        separatorBuilder: (_, _) => SizedBox(height: 8.h),
+                        itemBuilder: (_, index) {
+                          if (index < invoices.length) {
+                            return DueInvoiceCard(
+                              invoice: invoices[index],
+                              money: controller.money,
+                            );
+                          }
+                          if (invoices.isEmpty) {
+                            return Padding(
+                              padding: EdgeInsets.only(top: 160.h),
+                              child: Center(
+                                child: Text(
+                                  error ?? 'No due invoices',
+                                  textAlign: TextAlign.center,
+                                  style: getTextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    color: AppColors.textSecondary,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                          if (!controller.canLoadMoreDueInvoices) {
+                            return const SizedBox.shrink();
+                          }
+                          return Center(
+                            child: isLoading
+                                ? const CircularProgressIndicator()
+                                : TextButton(
+                                    onPressed: () =>
+                                        controller.refreshDueInvoices(loadMore: true),
+                                    child: const Text('Load more'),
+                                  ),
+                          );
+                        },
                       );
-                    }
-                    if (!controller.canLoadMoreDueInvoices) {
-                      return const SizedBox.shrink();
-                    }
-                    return Center(
-                      child: isLoading
-                          ? const CircularProgressIndicator()
-                          : TextButton(
-                              onPressed: () =>
-                                  controller.refreshDueInvoices(loadMore: true),
-                              child: const Text('Load more'),
-                            ),
-                    );
-                  },
-                ),
-              );
-            }),
-          ),
-        ],
+                    },
+                  ),
+                );
+              }),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -135,7 +201,7 @@ class _DebtTotalCard extends StatelessWidget {
             ),
             Text(
               '${controller.dueInvoicesTotal.value} '
-              'invoice${controller.dueInvoicesTotal.value == 1 ? '' : 's'}',
+              'invoice${controller.dueInvoicesTotal.value == 1 ? "" : "s"}',
               style: getTextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
