@@ -364,7 +364,22 @@ class DashboardController extends GetxController {
         )
         .where((item) => stockIndex < 3 || item.expirationDate != null)
         .toList();
-    inventoryProducts.assignAll(products);
+    inventoryProducts.assignAll(sortInventoryByName(products));
+  }
+
+  /// Plain item lists are shown alphabetically (A→Z, case-insensitive).
+  /// Sales rankings such as top-selling items keep the API's order.
+  static List<InventoryProductModel> sortInventoryByName(
+    Iterable<InventoryProductModel> products,
+  ) {
+    final sorted = products.toList();
+    sorted.sort((a, b) {
+      final byName = a.name.trim().toLowerCase().compareTo(
+        b.name.trim().toLowerCase(),
+      );
+      return byName != 0 ? byName : a.name.compareTo(b.name);
+    });
+    return sorted;
   }
 
   Future<void> openInventorySearch() async {

@@ -10,7 +10,7 @@ import '../constants/colors.dart';
 class AppTheme {
   AppTheme._();
 
-  static const _primaryBlue = Color(0xFF0F58BD);
+  static const _primaryBlue = AppColors.primary;
 
   static ThemeData lightTheme = ThemeData(
     useMaterial3: true,

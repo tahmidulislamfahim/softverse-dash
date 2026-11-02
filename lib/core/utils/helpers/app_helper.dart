@@ -38,8 +38,10 @@ class AppHelperFunctions {
     return 'Notice';
   }
 
-  static String getFormattedDate(DateTime date,
-      {String format = 'dd MMM yyyy'}) {
-    return DateFormat(format).format(date);
+  static String getFormattedDate(
+    DateTime date, {
+    String format = 'dd MMM yyyy',
+  }) {
+    return DateFormat(format).format(date.toLocal());
   }
 }

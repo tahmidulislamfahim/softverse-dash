@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../constants/colors.dart';
+
 class AppElevatedButtonTheme {
   AppElevatedButtonTheme._();
 
@@ -7,7 +9,7 @@ class AppElevatedButtonTheme {
     style: ButtonStyle(
       elevation: WidgetStateProperty.all(0),
       foregroundColor: WidgetStateProperty.all(Colors.white),
-      backgroundColor: WidgetStateProperty.all(Colors.blue),
+      backgroundColor: WidgetStateProperty.all(AppColors.primary),
       padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 18)),
       shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
     ),
@@ -17,7 +19,7 @@ class AppElevatedButtonTheme {
     style: ButtonStyle(
       elevation: WidgetStateProperty.all(0),
       foregroundColor: WidgetStateProperty.all(Colors.white),
-      backgroundColor: WidgetStateProperty.all(Colors.blueGrey),
+      backgroundColor: WidgetStateProperty.all(AppColors.dashboardHeaderGradientEnd),
       padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 18)),
       shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
     ),

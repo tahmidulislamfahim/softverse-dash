@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 class AppColors {
   AppColors._();
 
-  static const Color primary = Color(0xFF0F58BD);
+  // Brand palette: deep teal/emerald, deliberately distinct from the POS app's
+  // blue so the two companion apps are easy to tell apart at a glance.
+
+  static const Color primary = Color(0xFF0F766E);
   static const Color secondary = Color(0xFFFEC601);
 
   static const Color textPrimary = Color(0xFF212121);
@@ -18,29 +21,30 @@ class AppColors {
   static const Color info = Color(0xFF29B6F6);
 
   // Auth (login/signup) screens
-  static const Color authBackground = Color(0xFF337BFF);
-  static const Color authGradientStart = Color(0xFF528FFF);
-  static const Color authGradientEnd = Color(0xFF004DDD);
-  static const Color authLink = Color(0xFF1C73E0);
+  static const Color authBackground = Color(0xFF0D9488);
+  static const Color authGradientStart = Color(0xFF14B8A6);
+  static const Color authGradientEnd = Color(0xFF0F766E);
+  static const Color authLink = Color(0xFF0F766E);
   static const Color authTextDark = Color(0xFF2B353D);
   static const Color authFieldDivider = Color(0xFFE2E8F0);
 
   // Dashboard screen
-  static const Color dashboardHeaderGradientStart = Color(0xFF3179FF);
-  static const Color dashboardHeaderGradientEnd = Color(0xFF00369A);
-  static const Color dashboardDateBarBg = Color(0xFFD0D9FB);
+  static const Color dashboardHeaderGradientStart = Color(0xFF0D9488);
+  static const Color dashboardHeaderGradientEnd = Color(0xFF134E4A);
+  static const Color dashboardDateBarBg = Color(0xFFCCF2EC);
   static const Color dashboardTextDark = Color(0xFF2B353D);
-  static const Color dashboardAccentBlue = Color(0xFF337BFF);
+  // Name kept for compatibility; now the teal brand accent.
+  static const Color dashboardAccentBlue = Color(0xFF0F766E);
   static const Color dashboardAxisGrey = Color(0xFF64748B);
   static const Color dashboardCardGradientStart = Color(0xFFFFFFFF);
-  static const Color dashboardCardGradientEnd = Color(0xFFEAF1FF);
+  static const Color dashboardCardGradientEnd = Color(0xFFE6F6F3);
   static const Color dashboardNavInactive = Color(0xFF8188A2);
   static const Color dashboardCardBorder = Color(0xFFEBEDF3);
   static const Color dashboardRowDivider = Color(0xFFBDBEC4);
 
   // Inventory tab
-  static const Color inventoryChipBg = Color(0xFFF6F9FF);
-  static const Color inventoryChipBorder = Color(0xFF1D6CFF);
+  static const Color inventoryChipBg = Color(0xFFF0FBF9);
+  static const Color inventoryChipBorder = Color(0xFF0D9488);
   static const Color stockHigh = Color(0xFF169E3B);
   static const Color stockLow = Color(0xFFF7A305);
   static const Color dangerRed = Color(0xFFDA4352);
